@@ -4,12 +4,16 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "npx prisma generate && next build",
     "start": "next start",
     "lint": "next lint",
     "db:migrate": "prisma migrate dev",
     "db:client": "prisma generate",
-    "db:studio": "prisma studio"
+    "db:studio": "prisma studio",
+    "db:deploy": "prisma migrate deploy",
+    "db:docker": "npm run db:deploy && npm run db:client",
+    "docker:start": "npm run db:docker && npm run build && npm run start",
+    "docker:dev": "npm run db:docker && npm run dev"
   },
   "dependencies": {
     "@prisma/client": "5.19.1",
