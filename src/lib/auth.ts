@@ -2,7 +2,7 @@ import prisma from "@/db";
 import { NextAuthOptions } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
 import CredentialsProvider from "next-auth/providers/credentials";
-import { verifyPassword } from "./userDemoData";
+import { createInitialDataForUser, verifyPassword } from "./userDemoData";
 
 export const authOptions: NextAuthOptions = {
   providers: [
@@ -50,7 +50,7 @@ export const authOptions: NextAuthOptions = {
           }
         })
 
-        if (!result)
+        if (!result) {
           result = await prisma.user.create({
             data: {
               email: user.email || "",
@@ -58,6 +58,8 @@ export const authOptions: NextAuthOptions = {
               profileImage: user.image || ""
             }
           })
+          await createInitialDataForUser(result.id)
+        }
         return true;
       } catch (error) {
         console.log(error)
