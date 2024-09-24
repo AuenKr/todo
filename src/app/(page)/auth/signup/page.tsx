@@ -53,6 +53,7 @@ export default function SignUpPage() {
 
       router.push("/api/auth/signin");
     } catch (err) {
+      console.log(err);
       setError("An error occurred during sign-up. Please try again.");
     }
   };

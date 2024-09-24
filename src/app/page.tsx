@@ -1,6 +1,5 @@
-import { CheckCircle, Menu, GithubIcon } from "lucide-react";
+import { CheckCircle, GithubIcon } from "lucide-react";
 import Link from "next/link";
-import Image from "next/image";
 import { SignupBtn } from "@/components/signup";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";

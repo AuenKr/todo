@@ -1,4 +1,3 @@
-import { Menu } from "lucide-react";
 import Image from "next/image";
 import { SignupBtn } from "./signup";
 import Link from "next/link";

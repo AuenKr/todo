@@ -1,8 +1,5 @@
 import { Todo } from "@/components/todo/todo";
 import { Sidebar } from "@/components/todo/sidebar";
-import { useRecoilValue } from "recoil";
-import { activeLabelAtom } from "@/state/atom/activeLabelAtom";
-import { useSession } from "next-auth/react";
 import { getServerSession } from "next-auth";
 import { redirect } from "next/navigation";
 
