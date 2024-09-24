@@ -1,36 +1,55 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+To run Project
 
-## Getting Started
+add environment variables in .env file
+`cp sample.env .env`
 
-First, run the development server:
+```
+To Run With Docker
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+    1. In Linux
+        > docker compose up
+    2. In Windows
+        > docker-compose up
+
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+```
+To Run Normally
+    1. Get Postgres connection string
+        Through Docker
+        if use docker : docker run -d -p 5432:5432 -e POSTGRES_PASSWORD=admin123 postgres
+        connection string : postgresql://postgres:admin123@localhost:5432/postgres
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+        Or use online postgres db from neon.tech, etc.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+    1. For Backend
+        a. Go to backend directory
+        b. npm install
+        c. change DATABASE_URL in env to your postgres connection string
+        d. npx prisma migrate dev
+        e. npx prisma generate
+        (step d & e repeat whenever schema.prisma changes)
+        f. npm run dev
 
-## Learn More
+    2. For Frontend
+        a. Go to frontend directory
+        b. npm install
+        c. npm run dev
+```
 
-To learn more about Next.js, take a look at the following resources:
+#### Feature 
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- All feature require to an Todo application CRUD
+- Create different label
+- Organize Todo task categorized by label
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+#### Tech Stack
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Next.js
+- Postgres
+- Prisma (ORM)
+- Shadcn
+- TailwindCss
+- Docker
+- Typescript
+- Next-auth
