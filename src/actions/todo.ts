@@ -64,3 +64,34 @@ export async function markTodoState(todo: Todo) {
   console.log("update value", result.completed)
   return result.completed
 }
+
+export async function deleteTodo(todo: Todo) {
+  const session = await getServerSession();
+  if (!session?.user)
+    return null;
+
+  const result = await prisma.todo.delete({
+    where: {
+      id: todo.id
+    }
+  })
+  return result;
+}
+
+export async function updateTodo(id: number, title: string, labelId: number, description: string = "") {
+  const session = await getServerSession();
+  if (!session?.user)
+    return null;
+
+  const result = await prisma.todo.update({
+    where: {
+      id: id
+    },
+    data: {
+      title: title,
+      labelId: labelId,
+      description: description
+    }
+  })
+  return result
+}

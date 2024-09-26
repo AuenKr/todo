@@ -15,7 +15,7 @@ export function MarkTodoState({ todo }: { todo: Todo }) {
           return { ...each, completed: result as boolean };
         return each;
       });
-
+      console.log("Todo state change")
       return allTodo;
     });
   };

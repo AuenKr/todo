@@ -41,32 +41,30 @@ export function CreateLabel() {
   };
 
   return (
-    <div>
-      <Dialog>
-        <DialogTrigger>
-          <Button>
-            <Plus className="mr-2" /> Create Label
-          </Button>
-        </DialogTrigger>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Create a label</DialogTitle>
-            <DialogDescription>
-              Add different label to organize todo list
-            </DialogDescription>
-          </DialogHeader>
-          <Input
-            type="text"
-            placeholder="Add a label..."
-            value={newLabel}
-            onChange={(e) => setNewLabel(e.target.value)}
-            className="mr-2"
-          />
-          <Button onClick={addLabel}>
-            <Plus className="mr-2" /> Create Label
-          </Button>
-        </DialogContent>
-      </Dialog>
-    </div>
+    <Dialog>
+      <DialogTrigger className="w-full flex justify-center items-center hover:cursor-pointer m-2 pr-3">
+        <Plus />
+        <span className="hidden md:block">Create Label</span>
+      </DialogTrigger>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create a label</DialogTitle>
+          <DialogDescription>
+            Add different label to organize todo list
+          </DialogDescription>
+        </DialogHeader>
+        <Input
+          type="text"
+          placeholder="Add a label..."
+          value={newLabel}
+          onChange={(e) => setNewLabel(e.target.value)}
+          className="mr-2"
+        />
+        <Button onClick={addLabel} className="space-x-2">
+          <Plus />
+          <span>Create Label</span>
+        </Button>
+      </DialogContent>
+    </Dialog>
   );
 }

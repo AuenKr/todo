@@ -8,7 +8,6 @@ export function useTodoList() {
   const [loading, setLoading] = useState<boolean>(true);
   useEffect(() => {
     getTodo().then((result) => {
-      console.log(result);
       setTodoList(result);
       setLoading(false);
       return result;

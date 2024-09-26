@@ -14,7 +14,9 @@ export function Sidebar() {
   return (
     <div className="flex flex-col justify-between h-full">
       <div>
-        <h1 className="text-2xl font-bold mb-4">Todo app</h1>
+        <div className="flex space-x-2">
+          <h1 className="hidden md:block text-2xl font-bold mb-4">Todo app</h1>
+        </div>
         {loading ? (
           <div className="space-y-2">
             {skeletonArray.map((each) => {
@@ -36,22 +38,24 @@ export function Sidebar() {
                 }`}
                 onClick={() => setActiveLabel(project)}
               >
-                {project.name === "Inbox" ? (
-                  <Inbox className="inline-block mr-2" />
-                ) : (
-                  <Menu className="inline-block mr-2" />
-                )}
-                {project.name}
+                <div className="flex space-x-2">
+                  {project.name === "Inbox" ? (
+                    <Inbox className="inline-block" />
+                  ) : (
+                    <Menu className="inline-block" />
+                  )}
+                  <span className="hidden md:block">{project.name}</span>
+                </div>
               </li>
             ))}
           </ul>
         )}
       </div>
-      <div>
+      <div className="space-y-5">
         <div className="border-2 rounded-xl">
           <CreateLabel />
         </div>
-        <div className="text-center border-2 rounded-xl mt-5">
+        <div className="text-center border-2 rounded-xl hover:bg-gray-700">
           <SignoutBtn>Signout</SignoutBtn>
         </div>
       </div>

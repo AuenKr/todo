@@ -16,6 +16,13 @@ export function Todo() {
 
   useEffect(() => {
     const data = todoList.filter((each) => each.labelId == activeLabel?.id);
+
+    data.sort((a, b) => {
+      if (a.completed && !b.completed) return 1;
+      if (!a.completed && b.completed) return -1;
+      return 0;
+    });
+
     setFilterTask(data);
   }, [todoList, activeLabel]);
 
