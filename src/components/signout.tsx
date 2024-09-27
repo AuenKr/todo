@@ -9,6 +9,7 @@ export function SignoutBtn({ children }: { children: ReactNode }) {
   return (
     <Button
       onClick={() => {
+        localStorage.clear();
         signOut();
         redirect("/");
       }}

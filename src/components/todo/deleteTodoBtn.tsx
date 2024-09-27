@@ -8,8 +8,6 @@ export function DeleteTodoButton({ todo }: { todo: Todo }) {
   const setTodoState = useSetRecoilState(todoListAtom);
 
   const onClickHandler = async () => {
-    await deleteTodo(todo);
-
     setTodoState((prev) => {
       const allTodo = prev.filter((each) => {
         if (each.id === todo.id) return false;
@@ -18,6 +16,8 @@ export function DeleteTodoButton({ todo }: { todo: Todo }) {
 
       return allTodo;
     });
+    
+    await deleteTodo(todo);
   };
 
   return (

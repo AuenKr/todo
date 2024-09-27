@@ -71,7 +71,10 @@ export function CreateTodo() {
     >
       <DialogTrigger>
         <Button>
-          <Plus className="mr-2" /> Add Task
+          <span>
+            <Plus/>
+          </span>
+          <span>Add Task</span>
         </Button>
       </DialogTrigger>
       <DialogContent>
