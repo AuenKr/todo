@@ -29,46 +29,64 @@ export function EditTodoBtn({ todo }: { todo: Todo }) {
   const { toast } = useToast();
 
   const updateTask = async () => {
-    if (newTask.trim() !== "" || newDescription.trim() !== "" || activeLabel) {
-      const labelId = activeLabel?.id as unknown as number;
+    if (newTask.trim() !== "" || newDescription.trim() !== "") {
+      const labelId = activeLabel.id;
+      const tempTodo: Todo = {
+        ...todo,
+        title: newTask,
+        description: newDescription,
+      };
+
+      setTodo((prev) => {
+        const data = prev.map((each) => {
+          if (each.id === tempTodo.id) return tempTodo;
+          return each;
+        });
+        return data;
+      });
+      setDialog(false);
+
       const result = await updateTodo(
         todo.id,
         newTask,
         labelId,
         newDescription || ""
       );
-      if (!result) {
-        toast({
-          title: "Fail to update todo",
+
+      if (result) {
+        todo = result || todo;
+
+        setTodo((prev) => {
+          const data = prev.map((each) => {
+            if (each.id === todo.id) return todo;
+            return each;
+          });
+          return data;
         });
+
+        toast({
+          title: "Updated todo",
+        });
+
+        setNewTask("");
+        setNewDescription("");
+        setDialog(false);
+        return;
       }
 
-      todo = result || todo;
-
-      setTodo((prev) => {
-        const data = prev.map((each) => {
-          if (each.id === todo.id) return todo;
-          return each;
-        });
-        return data;
-      });
-      
       toast({
-        title: "Updated todo",
+        title: "Fail to update todo",
       });
-
-      setNewTask("");
-      setNewDescription("");
-      setDialog(false);
     }
   };
 
-  const dialogChangeHandler = () => {
-    setDialog((prev) => !prev);
-  };
-
   return (
-    <Dialog onOpenChange={dialogChangeHandler} open={dialog}>
+    <Dialog
+      onOpenChange={() => {
+        setDialog((prev) => !prev);
+      }}
+      open={dialog}
+    >
       <DialogTrigger>
         <Edit />
       </DialogTrigger>

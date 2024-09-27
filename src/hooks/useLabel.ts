@@ -10,7 +10,6 @@ export function useLabel() {
   const setActiveLabel = useSetRecoilState(activeLabelAtom);
   useEffect(() => {
     getTodoLabel().then((result) => {
-      console.log(result);
       setLabels(result);
       setLoading(false);
       setActiveLabel(result[0]);

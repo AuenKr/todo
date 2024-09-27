@@ -12,10 +12,14 @@ export function SignoutBtn({ children }: { children: ReactNode }) {
         signOut();
         redirect("/");
       }}
-      className="space-x-1 p-0 md:p-1 hover:bg-gray-700 w-full"
+      className="space-x-1 hover:bg-gray-700 w-full m-1 border-2 rounded-xl"
     >
-      <LogOut />
-      <span className="hidden md:block">{children}</span>
+      <div className="flex p-2 space-x-2">
+        <span>
+          <LogOut />
+        </span>
+        <span className="hidden md:block">{children}</span>
+      </div>
     </Button>
   );
 }

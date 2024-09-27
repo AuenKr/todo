@@ -1,7 +1,11 @@
 import { Label } from "@prisma/client";
 import { atom } from "recoil";
 
-export const activeLabelAtom = atom<Label | null>({
+export const activeLabelAtom = atom<Label>({
   key: "ActiveLabel",
-  default: null
+  default: {
+    id: 1000000,
+    name: "Inbox",
+    userId: null
+  }
 })

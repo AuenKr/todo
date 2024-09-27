@@ -3,8 +3,8 @@
 import { useState } from "react";
 import { Input } from "../ui/input";
 import { Button } from "../ui/button";
-import { Plus } from "lucide-react";
-import { createTodoLabel } from "@/actions/label";
+import { Edit2 } from "lucide-react";
+import { updateLabel } from "@/actions/label";
 import { useToast } from "@/hooks/use-toast";
 import { useSetRecoilState } from "recoil";
 import { todoLabelAtom } from "@/state/atom/todoLabelAtom";
@@ -16,33 +16,31 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import { Label } from "@prisma/client";
+import { DeleteLabelButton } from "./deleteLabelBtn";
 
-export function CreateLabel() {
-  const [newLabel, setNewLabel] = useState<string>("");
+export function EditLabel({ label }: { label: Label }) {
+  const [newLabel, setNewLabel] = useState<string>(label.name);
   const setLabel = useSetRecoilState(todoLabelAtom);
   const { toast } = useToast();
   const [dialogState, setDialogState] = useState<boolean>(false);
 
   const addLabel = async () => {
     if (newLabel.trim() !== "") {
-      const tempLabel = {
-        id: Math.floor(100000 * Math.random() + 100000),
-        name: newLabel,
-        userId: null,
-      };
+      setLabel((prev) => {
+        const labels = prev.map((each) => {
+          if (each.id === label.id) return { ...each, name: newLabel };
+          return each;
+        });
+        return labels;
+      });
 
-      setLabel((prev) => [...prev, tempLabel]);
       setDialogState(false);
 
-      const result = await createTodoLabel(newLabel);
+      const result = await updateLabel(label.id, newLabel);
       if (result) {
-        setLabel((prev) => {
-          const filterLabel = prev.filter((each) => each.id != tempLabel.id);
-          return [...filterLabel, result];
-        });
-
         return toast({
-          title: `Create label ${newLabel}`,
+          title: `Update label ${newLabel}`,
         });
       }
 
@@ -58,17 +56,19 @@ export function CreateLabel() {
       onOpenChange={() => setDialogState((prev) => !prev)}
     >
       <DialogTrigger className="w-full">
-        <Button className="w-full p-2 flex justify-center items-center hover:cursor-pointer m-2 pr-3 hover:bg-gray-700 border-2 rounded-xl space-x-1">
-          <Plus />
-          <span className="hidden md:block">Create Label</span>
-        </Button>
+        <span className="hover:cursor-pointer">
+          <Edit2 className="hover:stroke-red-400" />
+        </span>
       </DialogTrigger>
       <DialogContent>
-        <DialogHeader>
-          <DialogTitle>Create a label</DialogTitle>
-          <DialogDescription>
-            Add different label to organize todo list
-          </DialogDescription>
+        <DialogHeader className="flex justify-between">
+          <DialogTitle className="flex justify-between mr-3">
+            <span>Edit the label</span>
+            <div>
+              <DeleteLabelButton label={label} setDialogState={setDialogState}/>
+            </div>
+          </DialogTitle>
+          <DialogDescription>Edit Label Name</DialogDescription>
         </DialogHeader>
         <Input
           type="text"
@@ -78,8 +78,7 @@ export function CreateLabel() {
           className="mr-2"
         />
         <Button onClick={addLabel} className="space-x-2">
-          <Plus />
-          <span>Create Label</span>
+          <span>Update Label</span>
         </Button>
       </DialogContent>
     </Dialog>

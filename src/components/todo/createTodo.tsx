@@ -17,6 +17,7 @@ import { todoListAtom } from "@/state/atom/todoListAtom";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { Label } from "@radix-ui/react-label";
 import { activeLabelAtom } from "@/state/atom/activeLabelAtom";
+import { Todo } from "@prisma/client";
 
 export function CreateTodo() {
   const [newTask, setNewTask] = useState("");
@@ -24,30 +25,50 @@ export function CreateTodo() {
   const activeLabel = useRecoilValue(activeLabelAtom);
   const setTodo = useSetRecoilState(todoListAtom);
   const { toast } = useToast();
+  const [dialogState, setDialogState] = useState<boolean>(false);
 
   const addTask = async () => {
     if (newTask.trim() !== "" || newDescription.trim() !== "" || activeLabel) {
       const labelId = activeLabel?.id as unknown as number;
-      const result = await createTodo(newTask, labelId, newDescription);
-      if (!result) {
-        toast({
-          title: "Fail to update todo",
-        });
-      }
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      setTodo((prev) => [...prev, result]);
-      toast({
-        title: "Added todo",
+      const tempTodo: Todo = {
+        id: Math.floor(100000 * Math.random() + 1000000),
+        completed: false,
+        description: newDescription,
+        title: newTask,
+        labelId: activeLabel.id,
+        userId: 1,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      };
+      setTodo((prev) => {
+        return [...prev, tempTodo];
       });
+      setDialogState(false);
 
-      setNewTask("");
-      setNewDescription("");
-      console.log("saved todo ", result);
+      const result = await createTodo(newTask, labelId, newDescription);
+      if (result) {
+        setTodo((prev) => {
+          const data = prev.filter((each) => each.id != tempTodo.id);
+          return [...data, result];
+        });
+        toast({
+          title: "Added todo",
+        });
+
+        setNewTask("");
+        setNewDescription("");
+        return;
+      }
+      toast({
+        title: "Fail to update todo",
+      });
     }
   };
   return (
-    <Dialog>
+    <Dialog
+      open={dialogState}
+      onOpenChange={() => setDialogState((prev) => !prev)}
+    >
       <DialogTrigger>
         <Button>
           <Plus className="mr-2" /> Add Task

@@ -8,6 +8,15 @@ export function MarkTodoState({ todo }: { todo: Todo }) {
   const setTodoState = useSetRecoilState(todoListAtom);
 
   const onClickHandler = async () => {
+    const tempTodo: Todo = { ...todo, completed: !todo.completed };
+    setTodoState((prev) => {
+      const allTodo = prev.map((each) => {
+        if (each.id === todo.id) return tempTodo;
+        return each;
+      });
+      return allTodo;
+    });
+
     const result = await markTodoState(todo);
     setTodoState((prev) => {
       const allTodo = prev.map((each) => {
@@ -15,13 +24,12 @@ export function MarkTodoState({ todo }: { todo: Todo }) {
           return { ...each, completed: result as boolean };
         return each;
       });
-      console.log("Todo state change")
       return allTodo;
     });
   };
 
   return (
-    <div onClick={onClickHandler}>
+    <div onClick={onClickHandler} className="hover:cursor-pointer">
       {todo.completed ? <CircleCheckBig /> : <Circle />}
     </div>
   );
