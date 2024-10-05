@@ -55,9 +55,9 @@ export function EditLabel({ label }: { label: Label }) {
       open={dialogState}
       onOpenChange={() => setDialogState((prev) => !prev)}
     >
-      <DialogTrigger className="w-full">
+      <DialogTrigger className="w-full flex items-center justify-center">
         <span className="hover:cursor-pointer">
-          <Edit2 className="hover:stroke-red-400" />
+          <Edit2 className="hover:stroke-red-400 h-6" />
         </span>
       </DialogTrigger>
       <DialogContent>

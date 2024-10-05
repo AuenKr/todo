@@ -1,26 +1,24 @@
 "use client";
-import { ReactNode } from "react";
-import { Button } from "./ui/button";
 import { signOut } from "next-auth/react";
 import { redirect } from "next/navigation";
 import { LogOut } from "lucide-react";
 
-export function SignoutBtn({ children }: { children: ReactNode }) {
+export function SignoutBtn() {
   return (
-    <Button
+    <div
       onClick={() => {
         localStorage.clear();
         signOut();
         redirect("/");
       }}
-      className="space-x-1 hover:bg-gray-700 w-full m-1 border-2 rounded-xl"
+      className="space-x-1 hover:bg-gray-700 w-full m-1 border-2 rounded-xl hover:cursor-pointer"
     >
-      <div className="flex p-2 space-x-2">
+      <div className="flex p-2 space-x-2 justify-center items-center">
         <span>
           <LogOut />
         </span>
-        <span className="hidden md:block">{children}</span>
+        <span className="hidden md:block">Sign Out</span>
       </div>
-    </Button>
+    </div>
   );
 }

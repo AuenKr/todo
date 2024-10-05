@@ -58,10 +58,10 @@ export function CreateLabel() {
       onOpenChange={() => setDialogState((prev) => !prev)}
     >
       <DialogTrigger className="w-full">
-        <Button className="w-full p-2 flex justify-center items-center hover:cursor-pointer m-2 pr-3 hover:bg-gray-700 border-2 rounded-xl space-x-1">
+        <div className="w-full p-2 flex justify-center items-center hover:cursor-pointer hover:bg-gray-700 border-2 rounded-xl space-x-1">
           <Plus />
           <span className="hidden md:block">Create Label</span>
-        </Button>
+        </div>
       </DialogTrigger>
       <DialogContent>
         <DialogHeader>

@@ -18,6 +18,7 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { Label } from "@radix-ui/react-label";
 import { activeLabelAtom } from "@/state/atom/activeLabelAtom";
 import { Todo } from "@prisma/client";
+import { DatePicker } from "../datepicker";
 
 export function CreateTodo() {
   const [newTask, setNewTask] = useState("");
@@ -26,6 +27,7 @@ export function CreateTodo() {
   const setTodo = useSetRecoilState(todoListAtom);
   const { toast } = useToast();
   const [dialogState, setDialogState] = useState<boolean>(false);
+  const [date, setDate] = useState<Date | undefined>();
 
   const addTask = async () => {
     if (newTask.trim() !== "" || newDescription.trim() !== "" || activeLabel) {
@@ -39,13 +41,14 @@ export function CreateTodo() {
         userId: 1,
         createdAt: new Date(),
         updatedAt: new Date(),
+        deadline: date || null,
       };
       setTodo((prev) => {
         return [...prev, tempTodo];
       });
       setDialogState(false);
 
-      const result = await createTodo(newTask, labelId, newDescription);
+      const result = await createTodo(newTask, labelId, newDescription, date);
       if (result) {
         setTodo((prev) => {
           const data = prev.filter((each) => each.id != tempTodo.id);
@@ -72,7 +75,7 @@ export function CreateTodo() {
       <DialogTrigger>
         <Button>
           <span>
-            <Plus/>
+            <Plus />
           </span>
           <span>Add Task</span>
         </Button>
@@ -81,7 +84,7 @@ export function CreateTodo() {
         <DialogHeader>
           <DialogTitle>Add Todo</DialogTitle>
         </DialogHeader>
-        <div>
+        <div className="space-y-1">
           <Label>Title</Label>
           <Input
             type="text"
@@ -98,6 +101,10 @@ export function CreateTodo() {
             onChange={(e) => setNewDescription(e.target.value)}
             className="mr-2"
           />
+          <span className="flex flex-col">
+            <Label>Date</Label>
+            <DatePicker date={date} setDate={setDate} />
+          </span>
         </div>
         <DialogFooter>
           <Button onClick={addTask}>Save</Button>

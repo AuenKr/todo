@@ -18,7 +18,7 @@ export async function getTodo() {
   return data;
 }
 
-export async function createTodo(title: string, labelId: number, description: string = "") {
+export async function createTodo(title: string, labelId: number, description: string = "", deadline: Date | null = null) {
   const session = await getServerSession();
   if (!session?.user)
     return null;
@@ -41,7 +41,8 @@ export async function createTodo(title: string, labelId: number, description: st
       title: title,
       description: description,
       userId: user.id,
-      labelId: labelId
+      labelId: labelId,
+      deadline: deadline
     }
   })
   return data;
@@ -52,7 +53,6 @@ export async function markTodoState(todo: Todo) {
   if (!session?.user)
     return null;
 
-  console.log("curr val ", todo.completed)
   const result = await prisma.todo.update({
     where: {
       id: todo.id
@@ -61,7 +61,6 @@ export async function markTodoState(todo: Todo) {
       completed: !todo.completed
     }
   })
-  console.log("update value", result.completed)
   return result.completed
 }
 
@@ -78,7 +77,7 @@ export async function deleteTodo(todo: Todo) {
   return result;
 }
 
-export async function updateTodo(id: number, title: string, labelId: number, description: string = "") {
+export async function updateTodo(id: number, title: string, labelId: number, description: string = "", deadline: Date | null = null) {
   const session = await getServerSession();
   if (!session?.user)
     return null;
@@ -90,7 +89,8 @@ export async function updateTodo(id: number, title: string, labelId: number, des
     data: {
       title: title,
       labelId: labelId,
-      description: description
+      description: description,
+      deadline: deadline
     }
   })
   return result

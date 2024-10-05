@@ -1,6 +1,6 @@
 "use client";
 import { useLabel } from "@/hooks/useLabel";
-import { Edit, Inbox, Menu } from "lucide-react";
+import { Edit, Menu } from "lucide-react";
 import { CreateLabel } from "./createLabel";
 import { useRecoilState } from "recoil";
 import { activeLabelAtom } from "@/state/atom/activeLabelAtom";
@@ -20,16 +20,16 @@ export function Sidebar() {
       <div>
         <div className="flex space-x-2">
           <h1 className="w-full text-2xl font-bold mb-4 justify-between">
-            <div className="w-full flex justify-between items-center p-2">
+            <span className="p-2 flex justify-center md:justify-between items-center">
               <span className="hidden md:block">Todo app</span>
               <span onClick={() => setEditMode((prev) => !prev)}>
                 <Edit
                   className={`hover:stroke-red-500 hover:cursor-pointer ${
-                    editMode && "stroke-red-500"
+                    editMode && " stroke-red-500"
                   }`}
                 />
               </span>
-            </div>
+            </span>
           </h1>
         </div>
         {loading ? (
@@ -44,35 +44,45 @@ export function Sidebar() {
             })}
           </div>
         ) : (
-          <ul>
+          <ul className="grid grid-cols-1 items-center space-y-2">
             {labels?.map((label) => (
               <li
                 key={label.id}
-                className={`mb-2 p-2 rounded cursor-pointer flex justify-start items-center ${
-                  activeLabel?.name === label.name ? "bg-gray-700" : ""
-                } ${editMode && "w-40"}`}
+                className={`rounded cursor-pointer grid-cols-1 ${
+                  activeLabel?.name === label.name ? "bg-gray-700 " : ""
+                } ${editMode ? "w-40" : null}`}
                 onClick={() => setActiveLabel(label)}
               >
-                <div className="flex justify-between items-center space-x-2">
-                  <span className={`${editMode && "hidden"} w-full`}>
-                    {label.name === "Inbox" ? (
-                      <span className="p-1">
-                        <Inbox className="inline-block" />
-                      </span>
-                    ) : (
-                      <span className="flex">
-                        <Menu className="hidden md:block" />
-                        <Avatar className="md:hidden">
-                          <AvatarFallback className="text-white bg-gray-900 border-2 capitalize hover:bg-gray-700 font-bold">
-                            {label.name[0] + label.name[1]}
-                          </AvatarFallback>
-                        </Avatar>
-                      </span>
-                    )}
-                  </span>
-                  <div className="w-full flex justify-between items-center ">
-                    <span className="hidden md:block">{label.name}</span>
-                    <span>{editMode && <EditLabel label={label} />}</span>
+                <div className="col-span-1">
+                  <div className="flex justify-between">
+                    <div
+                      className={`flex items-center text-lg ${
+                        editMode && "hidden md:block"
+                      }`}
+                    >
+                      <div className="flex">
+                        <span className="hidden md:block">
+                          <Menu />
+                        </span>
+                        <span className="w-full md:hidden p-1">
+                          <Avatar>
+                            <AvatarFallback className="text-white bg-gray-900 border-2 uppercase hover:bg-gray-700 font-bold">
+                              {label.name[0] + label.name[1]}
+                            </AvatarFallback>
+                          </Avatar>
+                        </span>
+                        <span className="hidden md:inline-block font-bold">
+                          {label.name}
+                        </span>
+                      </div>
+                    </div>
+                    <div className="">
+                      {editMode && (
+                        <span>
+                          <EditLabel label={label} />
+                        </span>
+                      )}
+                    </div>
                   </div>
                 </div>
               </li>
@@ -80,13 +90,9 @@ export function Sidebar() {
           </ul>
         )}
       </div>
-      <div className="flex flex-col items-center justify-center">
-        <div className="w-full">
-          <CreateLabel />
-        </div>
-        <div className="w-full">
-          <SignoutBtn>Sign Out</SignoutBtn>
-        </div>
+      <div className="flex flex-col items-center justify-center space-y-3">
+        <CreateLabel />
+        <SignoutBtn />
       </div>
     </div>
   );

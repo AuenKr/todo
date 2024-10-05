@@ -8,6 +8,7 @@ import { Todo as TodoList } from "@prisma/client";
 import { Skeleton } from "../ui/skeleton";
 import { useRecoilValue } from "recoil";
 import { activeLabelAtom } from "@/state/atom/activeLabelAtom";
+import { SearchBox } from "./searchbox";
 
 export function Todo() {
   const { loading, todoList } = useTodoList();
@@ -30,12 +31,17 @@ export function Todo() {
 
   return (
     <div className="flex-1 p-8">
-      <h2 className="text-2xl font-bold mb-4">
-        {activeLabel ? (
-          activeLabel.name
-        ) : (
-          <Skeleton className="w-[100px] h-[40px] rounded-xl" />
-        )}
+      <h2 className="w-full text-2xl font-bold mb-4 flex justify-between">
+        <span>
+          {activeLabel ? (
+            activeLabel.name
+          ) : (
+            <Skeleton className="w-[100px] h-[40px] rounded-xl" />
+          )}
+        </span>
+        <span>
+          <SearchBox />
+        </span>
       </h2>
       <div className="mb-4 space-y-2 space-x-2">
         <CreateTodo />

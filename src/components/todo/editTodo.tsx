@@ -18,6 +18,7 @@ import { DialogTitle } from "@radix-ui/react-dialog";
 import { Label } from "@radix-ui/react-label";
 import { activeLabelAtom } from "@/state/atom/activeLabelAtom";
 import { Todo } from "@prisma/client";
+import { DatePicker } from "../datepicker";
 
 export function EditTodoBtn({ todo }: { todo: Todo }) {
   const [newTask, setNewTask] = useState(todo.title);
@@ -25,6 +26,9 @@ export function EditTodoBtn({ todo }: { todo: Todo }) {
   const activeLabel = useRecoilValue(activeLabelAtom);
   const setTodo = useSetRecoilState(todoListAtom);
   const [dialog, setDialog] = useState<boolean>(false);
+  const [date, setDate] = useState<Date | undefined>(
+    todo.deadline ? todo.deadline : undefined
+  );
 
   const { toast } = useToast();
 
@@ -35,6 +39,7 @@ export function EditTodoBtn({ todo }: { todo: Todo }) {
         ...todo,
         title: newTask,
         description: newDescription,
+        deadline: date || null,
       };
 
       setTodo((prev) => {
@@ -50,7 +55,8 @@ export function EditTodoBtn({ todo }: { todo: Todo }) {
         todo.id,
         newTask,
         labelId,
-        newDescription || ""
+        newDescription || "",
+        date
       );
 
       if (result) {
@@ -111,6 +117,10 @@ export function EditTodoBtn({ todo }: { todo: Todo }) {
             onChange={(e) => setNewDescription(e.target.value)}
             className="mr-2"
           />
+          <span className="flex flex-col">
+            <Label>Date</Label>
+            <DatePicker date={date || undefined} setDate={setDate} />
+          </span>
         </div>
         <DialogFooter>
           <Button onClick={updateTask}>Update</Button>
