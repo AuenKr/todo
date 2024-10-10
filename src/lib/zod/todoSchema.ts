@@ -23,6 +23,4 @@ export const todoSchema = z.object({
   deadline: z.date().optional(),
   labelId: z.number(),
   userId: z.number(),
-  createdAt: z.date(),
-  updatedAt: z.date()
 })
