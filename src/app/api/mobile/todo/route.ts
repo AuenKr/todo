@@ -96,10 +96,12 @@ export async function DELETE(req: NextRequest) {
 export async function PATCH(req: NextRequest) {
   try {
     const body: Todo = await req.json();
-    const { success, data } = todoSchema.safeParse(body);
-    if (!success)
+    const { success, data, error } = todoSchema.safeParse(body);
+    if (!success) {
+      console.log(error)
       throw new Error("Invalid Input")
-    // const result = await markTodoState(body)
+    }
+
     const result = await prisma.todo.update({
       where: {
         id: data.id,
@@ -116,6 +118,7 @@ export async function PATCH(req: NextRequest) {
       result: result.completed
     })
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ msg: "Internal server Error", error: (error as Error).message })
   }
 }

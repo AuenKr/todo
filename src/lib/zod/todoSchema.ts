@@ -19,8 +19,8 @@ export const todoSchema = z.object({
   id: z.number(),
   title: z.string(),
   description: z.string().optional(),
-  completed: z.boolean(),
-  deadline: z.date().optional(),
+  completed: z.boolean().optional(),
+  deadline: z.string().optional(),
   labelId: z.number(),
   userId: z.number(),
 })
