@@ -22,7 +22,7 @@ export async function POST(req: NextRequest) {
       throw new Error("Invalid body inputs")
     if (!data.description)
       data.description = "";
-    const result = await createTodo(data.title, data.labelId, data.description, data.deadline)
+    const result = await createTodo(data.title, data.labelId, data.description, new Date(data.deadline || ""))
     if (!result)
       throw new Error("Invalid session");
     return NextResponse.json({ ...result })
@@ -39,7 +39,7 @@ export async function PUT(req: NextRequest) {
       throw new Error("Invalid body inputs")
     if (!data.description)
       data.description = "";
-    const result = await updateTodo(data.id, data.title, data.labelId, data.description, data.deadline)
+    const result = await updateTodo(data.id, data.title, data.labelId, data.description, new Date(data.deadline || ""))
     if (!result)
       throw new Error("Invalid session");
 
