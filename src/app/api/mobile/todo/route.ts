@@ -21,9 +21,10 @@ export async function GET() {
 export async function POST(req: NextRequest) {
   try {
     const body = await req.json()
-    const { success, data } = todoCreateSchema.safeParse(body);
-    if (!success)
-      throw new Error("Invalid body inputs")
+    const { success, data, error } = todoCreateSchema.safeParse(body);
+    if (!success) {
+      throw new Error("Invalid body inputs", error)
+    }
     if (!data.description)
       data.description = "";
     const result = await prisma.todo.create({
@@ -39,6 +40,7 @@ export async function POST(req: NextRequest) {
       throw new Error("Invalid session");
     return NextResponse.json({ ...result })
   } catch (error) {
+    console.log(error)
     return NextResponse.json({ msg: "Internal Server Error", error: (error as Error).message });
   }
 }

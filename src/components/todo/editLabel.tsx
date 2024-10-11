@@ -65,14 +65,17 @@ export function EditLabel({ label }: { label: Label }) {
           <DialogTitle className="flex justify-between mr-3">
             <span>Edit the label</span>
             <div>
-              <DeleteLabelButton label={label} setDialogState={setDialogState}/>
+              <DeleteLabelButton
+                label={label}
+                setDialogState={setDialogState}
+              />
             </div>
           </DialogTitle>
           <DialogDescription>Edit Label Name</DialogDescription>
         </DialogHeader>
         <Input
           type="text"
-          placeholder="Add a label..."
+          placeholder="Set label name"
           value={newLabel}
           onChange={(e) => setNewLabel(e.target.value)}
           className="mr-2"
